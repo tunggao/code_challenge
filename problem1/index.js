@@ -19,6 +19,6 @@ var sum_to_n_1 = function(n) {
     if (n === 0) {
         return 0;
     } else {
-        return n + sum_to_n_c(n - 1);
+        return n + sum_to_n_3(n - 1);
     }
   };
