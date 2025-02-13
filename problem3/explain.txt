@@ -1,0 +1,46 @@
+(The lines correspond to the line in the original code)
+
+Line 1-4
+- Add the blockchain attribute because this attribute needs to be used for sortedBalances
+- Inside balances.sort there is clearly lhs: WalletBalance, rhs: WalletBalance so if WalletBalance does not have a blockchain attribute then lhs.blockchain will definitely report an error
+
+Line 5-9
+- In this case, FormattedWalletBalance has the same properties as WalletBalance along with additional formatted properties. Therefore, we can use FormattedWalletBalance extending WalletBalance to keep the code clean
+
+Line 11-13
+- Props inherits from BoxProps and does not add any additional properties or functions, it is not necessary to use Props. We can simply use BoxProps
+
+Line 15
+- We don't use children from props, we don't need to use destructuring "{ children, ...rest } = props;" here but can use props instead with rest in return.
+
+Line 19-34
+- getPriority does not depend on any state or props of the WalletPage component. Therefore, there is no need to declare it inside this component. Declaring the function outside the component will make it easier to reuse elsewhere in the application if needed
+
+Line 36-54
+- There is a slight logical error in this part. The purpose of the original code is to sort balances by priority, which leads to two conditions:
+  First, there must be a balance.
+  Second, it must be sorted by priority from low to high.
+- However, in original code the filter condition does not align with this purpose. Specifically:
+  if (lhsPriority > -99) {
+      if (balance.amount <= 0) {
+          return true;
+      }
+  }
+- This returns true if amount <= 0, which does not match the intended condition. It should be amount > 0.
+- Additionally, lhsPriority > -99 is not necessary. This condition will cause the list to miss out on balances from other wallets because lhsPriority is a priority number so if lhsPriority = -99 indicates that it should be sorted last rather than being excluded.
+
+- In .sort(a, b), the condition only needs to know whether return value < 0,  > 0 or == 0 to determine the order of the values or whether to keep them unchanged. 
+  Therefore, it is not necessary to return specific values like -1 or 1. 
+  The most concise and effective approach is to return a - b because:
+  a > b => a - b > 0
+  a < b => a - b < 0
+  a = b => a - b = 0.
+
+Line 56-61
+- This paragraph just can shortens the code
+
+Line 63      
+- In this case, we must use formattedBalances instead of sortedBalances as in the original code because formattedBalances includes formatting. This ensures that balance: FormattedWalletBalance will have a value when calling balance.formatted, avoiding errors
+
+Line 77
+- Use props instead of rest
